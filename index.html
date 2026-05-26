@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FM213 Music Impulse — Merch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --deep: #111118;
+      --card: #16161f;
+      --border: #2a2a3a;
+      --gold: #e8c96a;
+      --gold-dim: #a8903a;
+      --white: #f0ede6;
+      --muted: #7a7a8a;
+      --red: #c0392b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.4;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232,201,106,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(192,57,43,0.08) 0%, transparent 60%),
+        linear-gradient(180deg, #0a0a0a 0%, #111118 100%);
+      z-index: 0;
+    }
+
+    .waveform-bg {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 160px;
+      z-index: 0;
+      opacity: 0.18;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .fm-tag {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      border: 1px solid var(--gold-dim);
+      padding: 0.35rem 1rem;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      animation: fadeDown 0.8s ease both;
+    }
+
+    .site-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 15vw, 13rem);
+      line-height: 0.88;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      animation: fadeDown 0.8s 0.15s ease both;
+    }
+
+    .site-title span {
+      color: var(--gold);
+      display: block;
+    }
+
+    .site-subtitle {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      margin-top: 1.5rem;
+      text-transform: uppercase;
+      animation: fadeDown 0.8s 0.3s ease both;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      animation: fadeDown 1s 0.6s ease both;
+      z-index: 1;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold-dim), transparent);
+      animation: scrollLine 1.8s ease infinite;
+    }
+
+    @keyframes scrollLine {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 3rem;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .section-label span {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ── MERCH SECTION ── */
+    .merch-section {
+      padding: 6rem 2.5rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .merch-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+
+    .merch-intro {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 4rem;
+    }
+
+    /* ── PRODUCT GRID ── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2px;
+    }
+
+    .product-card {
+      background: var(--card);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+
+    .product-card:hover {
+      border-color: var(--gold-dim);
+    }
+
+    .product-card:hover .card-img {
+      transform: scale(1.04);
+    }
+
+    .product-card:hover .shop-cta {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card-img-wrap {
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      position: relative;
+      background: #1a1a22;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: block;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: var(--black);
+      border: 1px solid var(--border);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 0.3rem 0.7rem;
+    }
+
+    .shop-cta {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      background: var(--gold);
+      color: var(--black);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.5rem 1rem;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s, transform 0.25s;
+    }
+
+    .card-info {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+      color: var(--white);
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-price {
+      font-family: 'Space Mono', monospace;
+      font-size: 1rem;
+      color: var(--gold);
+    }
+
+    .card-link-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+
+    .product-card:hover .card-link-label { color: var(--gold); }
+
+    .card-link-label svg {
+      width: 12px;
+      height: 12px;
+      transition: transform 0.2s;
+    }
+
+    .product-card:hover .card-link-label svg {
+      transform: translate(2px, -2px);
+    }
+
+    /* ── MORE PRODUCTS PLACEHOLDER ── */
+    .add-more-card {
+      background: transparent;
+      border: 1px dashed var(--border);
+      aspect-ratio: unset;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 2rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .add-more-card .plus {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      color: var(--border);
+      line-height: 1;
+    }
+
+    .add-more-card p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 2.5rem;
+    }
+
+    /* ── YOUTUBE SECTION ── */
+    .yt-section {
+      padding: 6rem 2.5rem;
+      max-width: 1300px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .yt-text .merch-heading { margin-bottom: 1rem; }
+
+    .yt-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 2rem;
+      background: var(--red);
+      color: #fff;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.9rem 1.8rem;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .yt-cta:hover {
+      background: #e74c3c;
+      transform: translateX(3px);
+    }
+
+    .yt-visual {
+      position: relative;
+    }
+
+    .yt-frame {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    .yt-frame::before {
+      content: 'FM213 MUSIC IMPULSE';
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .yt-thumb-placeholder {
+      background: linear-gradient(135deg, #1a1a22 0%, #0f0f18 100%);
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .yt-thumb-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 20px,
+        rgba(232,201,106,0.03) 20px,
+        rgba(232,201,106,0.03) 21px
+      );
+    }
+
+    .play-btn {
+      width: 56px;
+      height: 56px;
+      background: var(--red);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .play-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: white;
+      margin-left: 3px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .merch-section, .yt-section { padding: 4rem 1.5rem; }
+      .yt-section { grid-template-columns: 1fr; gap: 2.5rem; }
+      .divider { margin: 0 1.5rem; }
+      footer { padding: 2.5rem 1.5rem; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header>
+    <div class="header-content">
+      <div class="fm-tag">Home Wear Goods × FM213</div>
+      <h1 class="site-title">Music<span>Merch</span></h1>
+      <p class="site-subtitle">For the ones who feel every frequency</p>
+    </div>
+
+    <!-- Animated waveform SVG -->
+    <svg class="waveform-bg" viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polyline id="wave" fill="none" stroke="#e8c96a" stroke-width="1.5"
+        points="0,80 30,40 60,100 90,30 120,110 150,50 180,90 210,20 240,120 270,60 300,95 330,35 360,105 390,55 420,85 450,25 480,115 510,65 540,80 570,30 600,100 630,45 660,90 690,15 720,125 750,55 780,80 810,35 840,110 870,60 900,85 930,20 960,115 990,50 1020,95 1050,30 1080,105 1110,45 1140,90 1170,25 1200,115 1230,65 1260,80 1290,35 1320,110 1350,55 1380,95 1410,45 1440,80"/>
+    </svg>
+
+    <div class="scroll-hint">Shop Below</div>
+  </header>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">FM213</a>
+    <ul class="nav-links">
+      <li><a href="#merch">Merch</a></li>
+      <li><a href="#channel">Channel</a></li>
+      <li><a href="https://www.homeweargoods.com" target="_blank">Full Store</a></li>
+    </ul>
+  </nav>
+
+  <!-- MERCH SECTION -->
+  <section class="merch-section" id="merch">
+    <div class="section-label reveal"><span>Music Collection</span></div>
+    <h2 class="merch-heading reveal">Gear for<br>Music Heads</h2>
+    <p class="merch-intro reveal">Mugs and gear built for the studio desk, the listening session, and everywhere the music takes you. Click any item to shop on Home Wear Goods.</p>
+
+    <div class="product-grid">
+
+      <!-- CARD 1: Audio Mixer Mug -->
+      <a class="product-card reveal"
+         href="https://www.homeweargoods.com/products/audio-mixer-music-mug"
+         target="_blank"
+         rel="noopener noreferrer">
+        <div class="card-img-wrap">
+          <img class="card-img"
+               src="https://www.homeweargoods.com/cdn/shop/files/14967574961011047501_2048.jpg?v=1769379771&width=600"
+               alt="Audio Mixer Music Mug"
+               loading="lazy" />
+          <div class="card-badge">Music Mug</div>
+          <div class="shop-cta">Shop Now →</div>
+        </div>
+        <div class="card-info">
+          <div class="card-name">Audio Mixer Music Mug</div>
+          <div class="card-desc">Pink/purple gradient ceramic with a minimalist mixer motif. Available in Pink, Red, and Black — 11oz.</div>
+          <div class="card-footer">
+            <span class="card-price">$20.75</span>
+            <span class="card-link-label">
+              View on HWG
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- CARD 2: Guitar Fretboard Mug -->
+      <a class="product-card reveal"
+         href="https://www.homeweargoods.com/products/guitar-fretboard-black-15oz-mug-vintage-wood-neck-coffee-cup"
+         target="_blank"
+         rel="noopener noreferrer">
+        <div class="card-img-wrap">
+          <img class="card-img"
+               src="https://www.homeweargoods.com/cdn/shop/files/1979920548541426886_2048.jpg?v=1768602307&width=600"
+               alt="Guitar Fretboard Mug"
+               loading="lazy" />
+          <div class="card-badge">Limited</div>
+          <div class="shop-cta">Shop Now →</div>
+        </div>
+        <div class="card-info">
+          <div class="card-name">Guitar Fretboard Mug</div>
+          <div class="card-desc">Glossy black 15oz ceramic with aged wood-grain fretboard print. Built for long practice sessions and late-night sessions.</div>
+          <div class="card-footer">
+            <span class="card-price">$14.33</span>
+            <span class="card-link-label">
+              View on HWG
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- CARD 3: Piano Keys Mug -->
+      <a class="product-card reveal"
+         href="https://www.homeweargoods.com/products/accent-coffee-mug-11-15oz"
+         target="_blank"
+         rel="noopener noreferrer">
+        <div class="card-img-wrap">
+          <img class="card-img"
+               src="https://www.homeweargoods.com/cdn/shop/files/6365098710538083351_2048.jpg?v=1768443228&width=600"
+               alt="Piano Keys Mug"
+               loading="lazy" />
+          <div class="card-badge">9 Colors</div>
+          <div class="shop-cta">Shop Now →</div>
+        </div>
+        <div class="card-info">
+          <div class="card-name">Piano Keys Mug</div>
+          <div class="card-desc">Classic piano keys on a white ceramic body. 9 interior/handle color options — 11oz. The everyday musician's morning ritual.</div>
+          <div class="card-footer">
+            <span class="card-price">$14.95</span>
+            <span class="card-link-label">
+              View on HWG
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ADD MORE PLACEHOLDER -->
+      <div class="add-more-card reveal">
+        <div class="plus">+</div>
+        <p>More Products<br>Coming Soon</p>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- YOUTUBE SECTION -->
+  <section class="yt-section" id="channel">
+    <div class="yt-text reveal">
+      <div class="section-label"><span>The Channel</span></div>
+      <h2 class="merch-heading">Watch.<br>React.<br>Feel It.</h2>
+      <p class="merch-intro" style="margin-bottom:0;">FM213 Music Impulse is where real music reactions happen. 500+ subscribers and growing. Join the community that lives for the drop.</p>
+      <a class="yt-cta"
+         href="https://www.youtube.com/@FM213MusicImpulse"
+         target="_blank"
+         rel="noopener noreferrer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+        Subscribe on YouTube
+      </a>
+    </div>
+    <div class="yt-visual reveal">
+      <div class="yt-frame">
+        <div class="yt-thumb-placeholder">
+          <div class="play-btn">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">FM213</div>
+    <ul class="footer-links">
+      <li><a href="https://www.homeweargoods.com" target="_blank">Full Store</a></li>
+      <li><a href="https://www.youtube.com/@FM213MusicImpulse" target="_blank">YouTube</a></li>
+      <li><a href="https://www.homeweargoods.com/policies/privacy-policy" target="_blank">Privacy</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 FM213 Music Impulse · Powered by Home Wear Goods</p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
